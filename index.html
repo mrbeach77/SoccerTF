@@ -174,15 +174,15 @@
       <section class="grid">
         <article class="card">
           <h2>Run the full app locally</h2>
-          <p>Install dependencies and start the dev server to access all features.</p>
+          <p>
+            Install dependencies and start the dev server. The live app will render in
+            the preview below when <code>localhost:3000</code> is running.
+          </p>
           <div class="code-block">
             npm install
             <br />
             npm run dev
           </div>
-          <a class="cta" href="http://localhost:3000" rel="noopener noreferrer">
-            Open http://localhost:3000
-          </a>
         </article>
 
         <article class="card">
@@ -200,6 +200,27 @@
             seed data to unlock full functionality.
           </p>
         </article>
+      </section>
+
+      <section class="demo">
+        <h2>Live app preview</h2>
+        <p class="subtitle">
+          If your Next.js dev server is running, the app will appear here. If you see a
+          connection error, start the server with <code>npm run dev</code> and refresh.
+        </p>
+        <div class="code-block">http://localhost:3000</div>
+        <iframe
+          title="SoccerTF live app preview"
+          src="http://localhost:3000"
+          style="
+            width: 100%;
+            height: 620px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            margin-top: 16px;
+            background: rgba(15, 23, 42, 0.4);
+          "
+        ></iframe>
       </section>
 
       <section class="demo">
