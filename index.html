@@ -4,11 +4,319 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SoccerTF</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #0f172a;
+        --card: #111827;
+        --text: #f8fafc;
+        --muted: #94a3b8;
+        --accent: #22c55e;
+        --accent-dark: #16a34a;
+        --border: rgba(148, 163, 184, 0.25);
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+        background: radial-gradient(circle at top, #1e293b, var(--bg));
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 48px 20px 80px;
+      }
+
+      header {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 3vw, 2.8rem);
+        margin: 0;
+      }
+
+      .subtitle {
+        color: var(--muted);
+        font-size: 1.05rem;
+        max-width: 720px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        margin-top: 32px;
+      }
+
+      .card {
+        background: rgba(17, 24, 39, 0.85);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      }
+
+      .card h2 {
+        margin: 0 0 8px;
+        font-size: 1.2rem;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 16px;
+        padding: 10px 16px;
+        background: var(--accent);
+        color: #052e12;
+        border-radius: 999px;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .cta:hover {
+        background: var(--accent-dark);
+      }
+
+      .demo {
+        margin-top: 40px;
+        padding: 24px;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        background: rgba(15, 23, 42, 0.65);
+      }
+
+      .demo h2 {
+        margin-top: 0;
+      }
+
+      .filters {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        margin-bottom: 16px;
+      }
+
+      label {
+        display: block;
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+        color: var(--muted);
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: rgba(15, 23, 42, 0.8);
+        color: var(--text);
+      }
+
+      .results {
+        display: grid;
+        gap: 12px;
+      }
+
+      .result {
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: rgba(17, 24, 39, 0.8);
+      }
+
+      .result strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .helper {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .code-block {
+        margin-top: 12px;
+        background: rgba(30, 41, 59, 0.9);
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        color: #e2e8f0;
+      }
+    </style>
   </head>
   <body>
     <main>
-      <h1>SoccerTF</h1>
-      <p>Welcome to SoccerTF.</p>
+      <header>
+        <h1>SoccerTF</h1>
+        <p class="subtitle">
+          This project is a full Next.js application. Opening this file directly will
+          only show a static preview, so below is an interactive demo and the exact steps
+          needed to run the complete web app with maps, trainer profiles, and dashboards.
+        </p>
+      </header>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Run the full app locally</h2>
+          <p>Install dependencies and start the dev server to access all features.</p>
+          <div class="code-block">
+            npm install
+            <br />
+            npm run dev
+          </div>
+          <a class="cta" href="http://localhost:3000" rel="noopener noreferrer">
+            Open http://localhost:3000
+          </a>
+        </article>
+
+        <article class="card">
+          <h2>What you get</h2>
+          <p>
+            Map + list search, trainer profiles, privacy-first contact links, and
+            admin scaffolding are all enabled when the app is running.
+          </p>
+        </article>
+
+        <article class="card">
+          <h2>Need help?</h2>
+          <p>
+            See README.md for environment setup, Supabase configuration, and optional
+            seed data to unlock full functionality.
+          </p>
+        </article>
+      </section>
+
+      <section class="demo">
+        <h2>Interactive demo (static preview)</h2>
+        <p class="subtitle">
+          This lightweight preview runs entirely in your browser so you can verify that
+          the UI behaves as expected even without the server running.
+        </p>
+        <div class="filters">
+          <div>
+            <label for="query">Trainer or center</label>
+            <input id="query" type="text" placeholder="Search by name or focus" />
+          </div>
+          <div>
+            <label for="region">Region</label>
+            <select id="region">
+              <option value="all">All regions</option>
+              <option value="west">West</option>
+              <option value="midwest">Midwest</option>
+              <option value="south">South</option>
+              <option value="northeast">Northeast</option>
+            </select>
+          </div>
+          <div>
+            <label for="zip">ZIP</label>
+            <input id="zip" type="text" placeholder="Enter ZIP (ex: 90001)" />
+          </div>
+        </div>
+        <div id="results" class="results"></div>
+        <p class="helper">
+          Tip: This preview uses demo data. Run the full app for live filtering, map
+          clustering, and dashboards.
+        </p>
+      </section>
     </main>
+
+    <script>
+      const demoLocations = [
+        {
+          name: "West Valley Soccer Lab",
+          focus: "Technical skills + speed",
+          region: "west",
+          zip: "90001",
+          distance: "4.6 mi",
+        },
+        {
+          name: "Heartland Strikers Center",
+          focus: "Goalkeeper training",
+          region: "midwest",
+          zip: "60616",
+          distance: "7.8 mi",
+        },
+        {
+          name: "Southern Pitch Academy",
+          focus: "Team clinics + camps",
+          region: "south",
+          zip: "73301",
+          distance: "5.1 mi",
+        },
+        {
+          name: "Northeast Pro Trainers",
+          focus: "College prep + scouting",
+          region: "northeast",
+          zip: "10001",
+          distance: "2.9 mi",
+        },
+      ];
+
+      const queryInput = document.getElementById("query");
+      const regionSelect = document.getElementById("region");
+      const zipInput = document.getElementById("zip");
+      const results = document.getElementById("results");
+
+      const render = () => {
+        const query = queryInput.value.trim().toLowerCase();
+        const region = regionSelect.value;
+        const zip = zipInput.value.trim();
+
+        const filtered = demoLocations.filter((location) => {
+          const matchesQuery =
+            !query ||
+            location.name.toLowerCase().includes(query) ||
+            location.focus.toLowerCase().includes(query);
+          const matchesRegion = region === "all" || location.region === region;
+          const matchesZip = !zip || location.zip.startsWith(zip);
+          return matchesQuery && matchesRegion && matchesZip;
+        });
+
+        results.innerHTML = filtered
+          .map(
+            (location) => `
+            <div class="result">
+              <strong>${location.name}</strong>
+              <span>${location.focus}</span>
+              <br />
+              <small>${location.zip} • ${location.distance}</small>
+            </div>
+          `,
+          )
+          .join("");
+
+        if (!filtered.length) {
+          results.innerHTML = `
+            <div class="result">
+              <strong>No matches found</strong>
+              <span>Try removing a filter or searching another region.</span>
+            </div>
+          `;
+        }
+      };
+
+      [queryInput, regionSelect, zipInput].forEach((element) => {
+        element.addEventListener("input", render);
+        element.addEventListener("change", render);
+      });
+
+      render();
+    </script>
   </body>
 </html>
