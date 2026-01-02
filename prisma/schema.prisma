@@ -1,0 +1,188 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  TRAINER
+  CENTER_ADMIN
+}
+
+enum OwnerType {
+  TRAINER
+  CENTER
+}
+
+enum VerificationStatus {
+  UNVERIFIED
+  PENDING
+  VERIFIED
+}
+
+enum AvailabilityExceptionStatus {
+  CANCELED
+  MOVED
+}
+
+enum ReportStatus {
+  OPEN
+  IN_REVIEW
+  RESOLVED
+  DISMISSED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  role      UserRole
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  trainerProfile TrainerProfile?
+  centerProfile  CenterProfile?
+}
+
+model TrainerProfile {
+  id                  String             @id @default(uuid())
+  userId              String             @unique
+  displayName         String
+  bio                 String
+  specialties         String[]
+  ageGroups           String[]
+  trainingTypes       String[]
+  yearsExperience     Int?
+  verificationStatus  VerificationStatus @default(UNVERIFIED)
+  publicWebsite       String?
+  publicInstagram     String?
+  publicContactUrl    String?
+  isPublished         Boolean            @default(false)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+
+  user                User               @relation(fields: [userId], references: [id])
+  locations           Location[]
+  availabilityBlocks  AvailabilityBlock[]
+  media               Media[]
+}
+
+model CenterProfile {
+  id                 String             @id @default(uuid())
+  ownerUserId        String             @unique
+  name               String
+  description        String
+  website            String?
+  verificationStatus VerificationStatus @default(UNVERIFIED)
+  publicContactUrl   String?
+  isPublished        Boolean            @default(false)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  owner              User               @relation(fields: [ownerUserId], references: [id])
+  locations          Location[]
+  availabilityBlocks AvailabilityBlock[]
+  media              Media[]
+}
+
+model Location {
+  id          String   @id @default(uuid())
+  ownerType   OwnerType
+  ownerId     String
+  name        String
+  city        String
+  state       String
+  zip         String?
+  address1    String?
+  address2    String?
+  notes       String?
+  fieldNumber String?
+  lat         Float
+  lng         Float
+  isPublic    Boolean  @default(true)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  trainer     TrainerProfile? @relation(fields: [ownerId], references: [id], map: "location_trainer_fk")
+  center      CenterProfile?  @relation(fields: [ownerId], references: [id], map: "location_center_fk")
+
+  @@index([state, city])
+  @@index([lat, lng])
+}
+
+model AvailabilityBlock {
+  id            String   @id @default(uuid())
+  ownerType     OwnerType
+  ownerId       String
+  locationId    String
+  dayOfWeek     Int
+  startTime     String
+  endTime       String
+  timezone      String
+  recurrenceRule String?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  location     Location @relation(fields: [locationId], references: [id])
+  trainer      TrainerProfile? @relation(fields: [ownerId], references: [id], map: "availability_trainer_fk")
+  center       CenterProfile?  @relation(fields: [ownerId], references: [id], map: "availability_center_fk")
+  exceptions   AvailabilityException[]
+}
+
+model AvailabilityException {
+  id                 String                      @id @default(uuid())
+  availabilityBlockId String
+  date               DateTime
+  status             AvailabilityExceptionStatus
+  note               String?
+
+  availabilityBlock AvailabilityBlock @relation(fields: [availabilityBlockId], references: [id])
+}
+
+model Media {
+  id        String   @id @default(uuid())
+  ownerType OwnerType
+  ownerId   String
+  url       String
+  type      String
+
+  trainer TrainerProfile? @relation(fields: [ownerId], references: [id], map: "media_trainer_fk")
+  center  CenterProfile?  @relation(fields: [ownerId], references: [id], map: "media_center_fk")
+}
+
+model Report {
+  id            String      @id @default(uuid())
+  reporterEmail String?
+  targetType    String
+  targetId      String
+  reason        String
+  details       String?
+  status        ReportStatus @default(OPEN)
+  createdAt     DateTime     @default(now())
+}
+
+model ZipCentroid {
+  zip   String @id
+  lat   Float
+  lng   Float
+  city  String
+  state String
+
+  @@index([state, city])
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  ownerType OwnerType
+  ownerId   String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+
+  @@index([ownerType, ownerId])
+}
